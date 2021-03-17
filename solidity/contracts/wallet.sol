@@ -17,7 +17,7 @@ struct Token{
 mapping(bytes32 => Token) public tokenMapping;
 bytes32[] public tokenList;
 
-// track multiple balances, address=>(byte32 (ticker) => amount)
+// track multiple balances, address=>(ticker(byte32) => amount)
 mapping(address => mapping(bytes32 => uint256)) public balances;
 
 modifier tokenExist(bytes32 _ticker){
