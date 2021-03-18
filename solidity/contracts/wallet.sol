@@ -19,6 +19,7 @@ bytes32[] public tokenList;
 
 // track multiple balances, address=>(ticker(byte32) => amount)
 mapping(address => mapping(bytes32 => uint256)) public balances;
+mapping(address => uint256) public ethBalances;
 
 modifier tokenExist(bytes32 _ticker){
     require(tokenMapping[_ticker].tokenAddress != address(0), "No address in tokenMapping");
@@ -40,6 +41,11 @@ function withdraw(uint _amount, bytes32 _ticker) external tokenExist(_ticker){
 
     balances[msg.sender][_ticker] = balances[msg.sender][_ticker].sub(_amount);
     IERC20(tokenMapping[_ticker].tokenAddress).transfer(msg.sender, _amount);
+}
+
+function depositEth() external payable{
+    require(msg.value > 0, "depositEth: msg.value should be higher than zero");
+    ethBalances[msg.sender] = ethBalances[msg.sender].add(msg.value);
 }
 
 }

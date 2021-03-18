@@ -4,7 +4,7 @@ const ERC20 = {
     dai: artifacts.require("Dai")
 }
 
-const Wallet = artifacts.require("wallet");
+const Wallet = artifacts.require("Wallet");
 
 const {
     BN,           // Big Number support
@@ -41,7 +41,7 @@ const {
         it("1. get totalSupply", async function (){
             await linkInstance.totalSupply();
             await daiInstance.totalSupply();
-          })
+          });
         
         it("2. addTokens to wallet, show link contract address", async function (){
             _ticker = await linkInstance.symbol();
@@ -50,18 +50,17 @@ const {
             _ticker = await daiInstance.symbol();
 
             await walletInstance.addToken( web3.utils.fromUtf8(_ticker ), daiInstance.address);
-        })
+        });
 
-        it("3. approve tokens and deposit", async function (){
+        it("3. approve token", async function (){
             _ticker = await linkInstance.symbol();
             await linkInstance.approve( walletInstance.address , 1000 ,{from: owner}) ;
-
-        })
+        });
 
         it("4. deposit tokens to Wallet from owner", async function (){
             _ticker = await linkInstance.symbol();
             await walletInstance.deposit( 100 , web3.utils.fromUtf8(_ticker) ,{from: owner});
-        })
+        });
 /*
         // Conditions that trigger a require statement can be precisely tested
         it("4. REVERT: contract owner will fail change cap, not capper_role (renounce it in test 2)", async function (){
