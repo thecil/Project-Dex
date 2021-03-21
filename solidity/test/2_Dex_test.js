@@ -145,7 +145,7 @@ const { assertion } = require('@openzeppelin/test-helpers/src/expectRevert');
         });
 
         it("9. Creating a SELL market order, the seller needs to have enough tokens for the trade", async function (){
-            let balance = await dexInstance.balances(owner, web3.utils.fromUtf8("ETH"));
+            let balance = await dexInstance.balances(alfa, web3.utils.fromUtf8("ETH"));
             assert.equal(new BN(balance), new BN(0), "Initial ETH balance is not 0");
             
             await expectRevert(
