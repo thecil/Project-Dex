@@ -17,7 +17,7 @@ const {
   const balance = require('@openzeppelin/test-helpers/src/balance');
   
   // Main function that is executed during the test
-  contract("ERC20", ([owner, alfa, beta, charlie]) => {
+  contract.skip("ERC20", ([owner, alfa, beta, charlie]) => {
     // Global variable declarations
     let linkInstance;
     let daiInstance;
@@ -45,21 +45,25 @@ const {
         
         it("2. addTokens to wallet, show link contract address", async function (){
             _ticker = await linkInstance.symbol();
-            await walletInstance.addToken( web3.utils.fromUtf8( _ticker), linkInstance.address);
+            _ticker = web3.utils.fromUtf8( _ticker);
+            await walletInstance.addToken( _ticker, linkInstance.address);
 
             _ticker = await daiInstance.symbol();
+            _ticker = web3.utils.fromUtf8( _ticker);
 
-            await walletInstance.addToken( web3.utils.fromUtf8(_ticker ), daiInstance.address);
+            await walletInstance.addToken( _ticker, daiInstance.address);
         });
 
         it("3. approve token", async function (){
             _ticker = await linkInstance.symbol();
+            _ticker = web3.utils.fromUtf8( _ticker);
             await linkInstance.approve( walletInstance.address , 1000 ,{from: owner}) ;
         });
 
         it("4. deposit tokens to Wallet from owner", async function (){
             _ticker = await linkInstance.symbol();
-            await walletInstance.deposit( 100 , web3.utils.fromUtf8(_ticker) ,{from: owner});
+            _ticker = web3.utils.fromUtf8( _ticker);
+            await walletInstance.depositToken( 100 ,_ticker ,{from: owner});
         });
 /*
         // Conditions that trigger a require statement can be precisely tested
