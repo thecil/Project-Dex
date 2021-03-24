@@ -65,16 +65,7 @@ const {
             _ticker = web3.utils.fromUtf8( _ticker);
             await walletInstance.depositToken( 100 ,_ticker ,{from: owner});
         });
-/*
-        // Conditions that trigger a require statement can be precisely tested
-        it("4. REVERT: contract owner will fail change cap, not capper_role (renounce it in test 2)", async function (){
-            const _failCap = (web3.utils.toWei('10000','ether'))
-            await expectRevert(
-            tokenInstance.newCap(_failCap, {from: owner}),
-            "ERC20PresetMinterPauser: must have capper role to change cap"
-            );
-        })
-*/
+
     })// end describe
 
   })//end contract
