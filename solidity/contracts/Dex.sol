@@ -27,7 +27,7 @@ contract Dex is Wallet{
     mapping(bytes32 => mapping(uint256 => Order[])) public orderBook;
 
     function getOrderBook(bytes32  _ticker, Side _orderType) public view returns(Order[] memory){
-        return orderBook[(_ticker)][uint256(_orderType)];
+        return orderBook[_ticker][uint256(_orderType)];
     }
 
     function createLimitOrder(Side _orderType, bytes32 _ticker, uint256 _amount, uint256 _price) public{
@@ -74,11 +74,7 @@ contract Dex is Wallet{
     }
 
     function createMarketOrder(Side _orderType, bytes32 _ticker, uint256 _amount) public{
-        if(_orderType == Side.BUY){
-            // Verify that the trader(buyer) has enough ETH to cover the purchase
-            require(balances[msg.sender][bytes32("ETH")] >= _amount, "createMarketOrder: Not enough ETH Balance deposited");
-        }
-        else if(_orderType == Side.SELL){
+        if(_orderType == Side.SELL){
             require(balances[msg.sender][_ticker] >= _amount, "createMarketOrder: Not enough Token Balance deposited");
         }
 

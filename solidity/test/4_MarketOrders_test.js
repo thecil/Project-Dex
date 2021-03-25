@@ -58,22 +58,16 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
                 "createMarketOrder: Not enough Token Balance deposited"
             );
         }); 
-        it("2. Creating a BUY market order, the buyer needs to have enough ETH for the trade", async function (){
-            await expectRevert(
-                dexInstance.createMarketOrder(orderType.buy, _ticker, ether("1"), {from: owner}),
-                "createMarketOrder: Not enough ETH Balance deposited"
-            );
-        });
-        it("3. Market orders can be submitted even if the order book is empty", async function (){
+        it("2. Market orders can be submitted even if the order book is empty", async function (){
             const buyOrderBook = await dexInstance.getOrderBook(_ticker, orderType.buy);
             const sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
             assert(buyOrderBook.length == 0 && sellOrderBook.length == 0, "OrderBooks should be empty at the start");
 
-            await dexInstance.depositEth({value: ether("5"), from: owner});
+            await dexInstance.depositEth({value: ether("1"), from: owner});
             await dexInstance.createMarketOrder(orderType.buy, _ticker, ether("1"), {from: owner});
         });
         
-        it("4. Market orders should not fill more limit orders than the market order amount ", async function (){
+        it("3. Market orders should not fill more limit orders than the market order amount ", async function (){
             // check orderbooks are empty
             buyOrderBook = await dexInstance.getOrderBook(_ticker, orderType.buy);
             sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
@@ -95,18 +89,19 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
             await dexInstance.depositToken(ether("1") , _ticker ,{from: beta});
             await dexInstance.depositToken(ether("1") , _ticker ,{from: charlie});
             // Fill up the sell order book
-            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.25"), {from: alfa});
-            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.5"), {from: beta});
+            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.5"), {from: alfa});
+            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.25"), {from: beta});
             await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("1"), {from: charlie});
             //depositEth and create market order to buy 2/3 links orders
-            // await dexInstance.depositEth({value: ether("2"), from: owner});
 
             const mapBalance = await dexInstance.balances(owner, web3.utils.fromUtf8("ETH"));
             console.log(mapBalance.toString());
             console.log(mapBalance.toString());
             console.log(mapBalance.toString());
-
-            await dexInstance.createMarketOrder(orderType.buy, _ticker, ether("0.75"), {from: owner});
+            console.log(ether("0.75").toString());
+            console.log(ether("0.75").toString());
+            console.log(ether("0.75").toString());
+            await dexInstance.createMarketOrder(orderType.buy, _ticker, ether("2"));
             // check sell orderbook
             sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
             
