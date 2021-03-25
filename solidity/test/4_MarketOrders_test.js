@@ -64,7 +64,7 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
             assert(buyOrderBook.length == 0 && sellOrderBook.length == 0, "OrderBooks should be empty at the start");
 
             await dexInstance.depositEth({value: ether("1"), from: owner});
-            await dexInstance.createMarketOrder(orderType.buy, _ticker, ether("1"), {from: owner});
+            await dexInstance.createMarketOrder(orderType.buy, _ticker, 1, {from: owner});
         });
         
         it("3. Market orders should not fill more limit orders than the market order amount ", async function (){
@@ -89,23 +89,16 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
             await dexInstance.depositToken(ether("1") , _ticker ,{from: beta});
             await dexInstance.depositToken(ether("1") , _ticker ,{from: charlie});
             // Fill up the sell order book
-            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.5"), {from: alfa});
-            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("0.25"), {from: beta});
-            await dexInstance.createLimitOrder(orderType.sell, _ticker, ether("1"), ether("1"), {from: charlie});
+            await dexInstance.createLimitOrder(orderType.sell, _ticker, 1, ether("0.5"), {from: alfa});
+            await dexInstance.createLimitOrder(orderType.sell, _ticker, 1, ether("0.25"), {from: beta});
+            await dexInstance.createLimitOrder(orderType.sell, _ticker, 1, ether("1"), {from: charlie});
             //depositEth and create market order to buy 2/3 links orders
 
             const mapBalance = await dexInstance.balances(owner, web3.utils.fromUtf8("ETH"));
-            console.log(mapBalance.toString());
-            console.log(mapBalance.toString());
-            console.log(mapBalance.toString());
-            console.log(ether("0.75").toString());
-            console.log(ether("0.75").toString());
-            console.log(ether("0.75").toString());
-            await dexInstance.createMarketOrder(orderType.buy, _ticker, ether("2"));
+
+            await dexInstance.createMarketOrder(orderType.buy, _ticker, 2);
             // check sell orderbook
             sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
-            
-
             assert(sellOrderBook.length == 1, "Sell side orderbook should only have 1 order left");
             assert(sellOrderBook[0].filled == 0, "Sell side order should have 0 filled");
             
