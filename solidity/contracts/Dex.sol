@@ -86,7 +86,7 @@ contract Dex is Wallet{
         else if(_orderType == Side.SELL){
             orderBookSide = 0;
         }
-        Order[] storage orders = orderBook[_ticker][uint256(orderBookSide)];
+        Order[] storage orders = orderBook[_ticker][orderBookSide];
 
         uint256 _totalFilled = 0;
 

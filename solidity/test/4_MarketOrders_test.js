@@ -40,7 +40,7 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
     }
 
     //set contracts instances
-    before(async function() {
+    beforeEach(async function() {
         // Deploy tokens to testnet
         linkInstance = await ERC20.link.new(ether("1000"));
         daiInstance = await ERC20.dai.new(ether("1000"));
@@ -93,10 +93,9 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
             await dexInstance.createLimitOrder(orderType.sell, _ticker, 1, ether("0.25"), {from: beta});
             await dexInstance.createLimitOrder(orderType.sell, _ticker, 1, ether("1"), {from: charlie});
             //depositEth and create market order to buy 2/3 links orders
-
             const mapBalance = await dexInstance.balances(owner, web3.utils.fromUtf8("ETH"));
-
-            await dexInstance.createMarketOrder(orderType.buy, _ticker, 2);
+            await dexInstance.depositEth({value: ether("1"), from: owner});
+            await dexInstance.createMarketOrder(orderType.buy, _ticker, 1);
             // check sell orderbook
             sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
             assert(sellOrderBook.length == 1, "Sell side orderbook should only have 1 order left");
