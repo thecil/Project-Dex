@@ -95,9 +95,14 @@ contract("DEX Market Orders", ([owner, alfa, beta, charlie]) => {
             //depositEth and create market order to buy 2/3 links orders
             const mapBalance = await dexInstance.balances(owner, web3.utils.fromUtf8("ETH"));
             await dexInstance.depositEth({value: ether("1"), from: owner});
-            await dexInstance.createMarketOrder(orderType.buy, _ticker, 1);
+            await dexInstance.createMarketOrder(orderType.buy, _ticker, 2);
             // check sell orderbook
             sellOrderBook = await dexInstance.getOrderBook(_ticker, orderType.sell);
+
+            console.log(sellOrderBook.length);
+            console.log(sellOrderBook.length);
+            console.log(sellOrderBook.length);
+
             assert(sellOrderBook.length == 1, "Sell side orderbook should only have 1 order left");
             assert(sellOrderBook[0].filled == 0, "Sell side order should have 0 filled");
             

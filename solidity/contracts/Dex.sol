@@ -81,10 +81,10 @@ contract Dex is Wallet{
         uint256 orderBookSide;
 
         if(_orderType == Side.BUY){
-            orderBookSide = 1;
+            orderBookSide = 0;
         }
         else if(_orderType == Side.SELL){
-            orderBookSide = 0;
+            orderBookSide = 1;
         }
         Order[] storage orders = orderBook[_ticker][orderBookSide];
 
@@ -130,7 +130,7 @@ contract Dex is Wallet{
         }
             // loop through the orderbook and remove 100% filled orders
         while(orders.length > 0 && orders[0].filled == orders[0].amount){
-            // remove the top elem,ent in the orders array by orverwriting every element
+            // remove the top element in the orders array by overwriting every element
             // whit the next element in the order list
             for (uint256 _i = 0; _i < orders.length; _i++) {
                 orders[_i] = orders[_i + 1];
